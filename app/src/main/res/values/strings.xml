@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Connectussy</string>
+    <string name="connectussy">Connectussy</string>
+    <string name="play_turn">Play Turn</string>
+    <string name="instructions">Instructions</string>
+    <string name="restart_game">Restart Game</string>
+</resources>
