@@ -18,6 +18,11 @@ class MainActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             binding.boardView.playTurn()
         }
+
+        /* TODO: Dialog should pop up for Instructions button
+        *        Mention that words are from https://www.thefreedictionary.com/4-letter-words.htm
+        */
+        // TODO: Dialog should pop up for when the game is over
     }
 
     fun showText(message: String) {

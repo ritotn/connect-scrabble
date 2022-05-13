@@ -8,24 +8,19 @@ object BoardModel {
     const val GAMEOVERWIN = "Game Over Win"
     const val GAMEOVERTIE = "Game Over Tie"
 
-    public val LETTERS = arrayOf(
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-        ""
-    )
-
     private val model = arrayOf(
         arrayOf("", "", "", "", "", "", ""),
-        arrayOf("", "", "", "", "", "", ""),
-        arrayOf("", "", "", "", "", "", ""),
+        arrayOf("", "", "", "R", "", "", ""),
+        arrayOf("", "", "E", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
     )
 
-    private var highlightedCell = Pair(-1,-1)
+    private var highlightedCell = Pair(-1, -1)
     private var selectedLetter = "A"
+    private var winningWord = "" // TODO: Use this variable in GameOver Dialog
 
     private var currentPlayer = PLAYER1
 
@@ -51,6 +46,7 @@ object BoardModel {
         return selectedLetter
     }
 
+    // TODO: LetterView should call this function when a letter from the Letter Box is clicked
     fun setSelectedLetter(letter: String) {
         selectedLetter = letter
     }
@@ -99,9 +95,70 @@ object BoardModel {
         if (filledCellCount == 49) return GAMEOVERTIE
 
         // check if win
-        // TODO: Check if any words are formed
+        winningWord = isWordFormed()
+        if (winningWord != "") return GAMEOVERWIN
 
         return GAMENOTOVER
+    }
+
+    // returns winning word if present, empty otherwise
+    private fun isWordFormed(): String {
+        // create all possible words
+        val possibleWords = mutableListOf<String>()
+
+        // 28 * 2 possible horizontal words ➡️
+        for (i in 0..6) {
+            for (j in 0..3) {
+                var possibleWord = ""
+                for (k in 0..3) {
+                    possibleWord += model[i][j + k]
+                }
+                possibleWords.add(possibleWord.lowercase())
+                possibleWords.add(possibleWord.lowercase().reversed())
+            }
+
+        }
+        // 28 * 2 possible vertical words ⬇️
+        for (j in 0..6) {
+            for (i in 0..3) {
+                var possibleWord = ""
+                for (k in 0..3) {
+                    possibleWord += model[i + k][j]
+                }
+                possibleWords.add(possibleWord.lowercase())
+                possibleWords.add(possibleWord.lowercase().reversed())
+            }
+        }
+        // 16 * 2 possible diagonal (top-left to bottom-right) words ↘️
+        for (i in 0..3) {
+            for (j in 0..3) {
+                var possibleWord = ""
+                for (k in 0..3) {
+                    possibleWord += model[i + k][j + k]
+                }
+                possibleWords.add(possibleWord.lowercase())
+                possibleWords.add(possibleWord.lowercase().reversed())
+            }
+        }
+        // 16 * 2 possible diagonal (bottom-left to top-right) words ↗️
+        for (i in 3..6) {
+            for (j in 0..3) {
+                var possibleWord = ""
+                for (k in 0..3) {
+                    possibleWord += model[i - k][j + k]
+                }
+                possibleWords.add(possibleWord.lowercase())
+                possibleWords.add(possibleWord.lowercase().reversed())
+            }
+        }
+
+        // check if any of the possible words are valid
+        for (possibleWord in possibleWords) {
+            if (possibleWord in ValidWords.getValidWords()) {
+                return possibleWord
+            }
+        }
+        return ""
     }
 
     fun resetModel() {
