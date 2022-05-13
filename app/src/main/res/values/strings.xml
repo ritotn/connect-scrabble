@@ -4,4 +4,5 @@
     <string name="play_turn">Play Turn</string>
     <string name="instructions">Instructions</string>
     <string name="restart_game">Restart Game</string>
+    <string name="player_1_s_turn">Player 1\'s turn</string>
 </resources>

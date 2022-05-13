@@ -3,9 +3,8 @@ package hu.ait.connectussy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import hu.ait.connectussy.databinding.ActivityMainBinding
-import hu.ait.connectussy.dialog.GameoverDialog
 
-class MainActivity : AppCompatActivity(), GameoverDialog.GameoverHandler {
+class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,18 +14,13 @@ class MainActivity : AppCompatActivity(), GameoverDialog.GameoverHandler {
 
         binding.btnRestart.setOnClickListener {
             binding.boardView.resetGame()
-            binding.tvMessage.text = "Boohoo"
         }
         binding.btnSubmit.setOnClickListener {
-            binding.boardView.changePlayer()
+            binding.boardView.playTurn()
         }
     }
 
-    override fun gameoverCreated() {
-        TODO("Not yet implemented")
-    }
-
-    public fun showText(message: String) {
+    fun showText(message: String) {
         binding.tvMessage.text = message
     }
 }

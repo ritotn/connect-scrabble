@@ -8,12 +8,9 @@ import android.view.View
 
 class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private var paintBackground: Paint = Paint()
-    private lateinit var paintLine: Paint
-    private lateinit var paintCross: Paint
-    private lateinit var paintCircle: Paint
-    private lateinit var paintText: Paint
-
-
+    private var paintLine: Paint
+    private var paintLetter: Paint
+    private var paintHighlighted: Paint
     private var bitmapBg: Bitmap =
         BitmapFactory.decodeResource(resources, R.drawable.monet)
 
@@ -26,24 +23,18 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 5f
 
-        paintCross = Paint()
-        paintCross.color = Color.RED
-        paintCross.style = Paint.Style.STROKE
-        paintCross.strokeWidth = 5f
+        paintLetter = Paint()
+        paintLetter.color = Color.WHITE
 
-        paintCircle = Paint()
-        paintCircle.color = Color.GREEN
-        paintCircle.style = Paint.Style.STROKE
-        paintCircle.strokeWidth = 5f
+        paintHighlighted = Paint()
+        paintHighlighted.color = Color.RED
 
-        paintText = Paint()
-        paintText.color = Color.GREEN
-        paintText.textSize = 70f
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        paintText.textSize = h / 3f
+        paintLetter.textSize = h / 7f
+        paintHighlighted.textSize = h / 7f
 
         bitmapBg = Bitmap.createScaledBitmap(
             bitmapBg,
@@ -51,117 +42,93 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         )
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas?.drawRect(
-            0f, 0f, width.toFloat(),
-            height.toFloat(), paintBackground
-        )
+        BoardModel.setCellLetter(3, 3, "E")
 
-        canvas?.drawBitmap(bitmapBg, 0f, 0f, null)
-
-        drawGameArea(canvas!!)
-
-        drawPlayers(canvas)
+        drawBoard(canvas)
+        drawLetters(canvas)
     }
 
-    private fun drawGameArea(canvas: Canvas) {
+    private fun drawBoard(canvas: Canvas) {
+        // background
+        canvas.drawBitmap(bitmapBg, 0f, 0f, null)
         // border
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintLine)
-        // six horizontal lines
-        canvas.drawLine(
-            0f, (height / 7).toFloat(), width.toFloat(), (height / 7).toFloat(),
-            paintLine
-        )
-        canvas.drawLine(
-            0f, (2 * height / 7).toFloat(), width.toFloat(),
-            (2 * height / 7).toFloat(), paintLine
-        )
-        canvas.drawLine(
-            0f, (3 * height / 7).toFloat(), width.toFloat(),
-            (3 * height / 7).toFloat(), paintLine
-        )
-        canvas.drawLine(
-            0f, (4 * height / 7).toFloat(), width.toFloat(),
-            (4 * height / 7).toFloat(), paintLine
-        )
-        canvas.drawLine(
-            0f, (5 * height / 7).toFloat(), width.toFloat(),
-            (5 * height / 7).toFloat(), paintLine
-        )
-        canvas.drawLine(
-            0f, (6 * height / 7).toFloat(), width.toFloat(),
-            (6 * height / 7).toFloat(), paintLine
-        )
-
-        // six vertical lines
-        canvas.drawLine(
-            (width / 7).toFloat(), 0f, (width / 7).toFloat(), height.toFloat(),
-            paintLine
-        )
-        canvas.drawLine(
-            (2 * width / 7).toFloat(), 0f, (2 * width / 7).toFloat(), height.toFloat(),
-            paintLine
-        )
-        canvas.drawLine(
-            (3 * width / 7).toFloat(), 0f, (3 * width / 7).toFloat(), height.toFloat(),
-            paintLine
-        )
-        canvas.drawLine(
-            (4 * width / 7).toFloat(), 0f, (4 * width / 7).toFloat(), height.toFloat(),
-            paintLine
-        )
-        canvas.drawLine(
-            (5 * width / 7).toFloat(), 0f, (5 * width / 7).toFloat(), height.toFloat(),
-            paintLine
-        )
-        canvas.drawLine(
-            (6 * width / 7).toFloat(), 0f, (6 * width / 7).toFloat(), height.toFloat(),
-            paintLine
-        )
+        // six horizontal and vertical lines
+        for (i in 1..6) {
+            canvas.drawLine(
+                0f, (i * height / 7).toFloat(), width.toFloat(), (i * height / 7).toFloat(),
+                paintLine
+            )
+            canvas.drawLine(
+                (i * width / 7).toFloat(), 0f, (i * width / 7).toFloat(), height.toFloat(),
+                paintLine
+            )
+        }
     }
 
-    private fun drawPlayers(canvas: Canvas) {
+    private fun drawLetters(canvas: Canvas) {
         for (i in 0..6) {
             for (j in 0..6) {
-                if (BoardModel.getFieldContent(i, j) == BoardModel.CIRCLE ||
-                        BoardModel.getFieldContent(i,j) == BoardModel.CROSS) {
-                    val centerX = (i * width / 7 + width / 14).toFloat()
-                    val centerY = (j * height / 7 + height / 14).toFloat()
-                    val radius = height / 14 - 6
-
-                    canvas.drawCircle(centerX, centerY, radius.toFloat(), paintCircle)
+                val letter = BoardModel.getCellLetter(i, j)
+                if (letter != "") {
+                    var widthOffset = 42
+                    val heightOffset = 42
+                    when (letter) {
+                        "I" -> { // shift "I" to the right a bit
+                            widthOffset = 21
+                        }
+                        "M" -> { // shift "M" to the left a bit
+                            widthOffset = 84
+                        }
+                        "W" -> { // shift "W" to the left a bit
+                            widthOffset = 84
+                        }
+                    }
+                    var paint = paintLetter
+                    if (Pair(i, j) == BoardModel.getCellHighlighted()) {
+                        paint = paintHighlighted
+                    }
+                    canvas.drawText(
+                        letter,
+                        (i * width / 7 + width / widthOffset).toFloat(),
+                        ((j + 1) * height / 7 - height / heightOffset).toFloat(),
+                        paint
+                    )
                 }
 
             }
         }
     }
 
+    // what happens when a player touches the board
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_DOWN) {
+
+            // get coordinate of where they touched
             val tX = event.x.toInt() / (width / 7)
             val tY = event.y.toInt() / (height / 7)
 
-            if (tX < 7 && tY < 7 && BoardModel.getFieldContent(tX, tY) ==
-                BoardModel.EMPTY
+            val selectedLetter = BoardModel.getSelectedLetter()
+
+            // if they haven't already placed another cell this turn,
+            // and the cell they touched is a placeable cell,
+            // place letter there
+            if (BoardModel.getCellHighlighted() == Pair(-1, -1) &&
+                BoardModel.isPlaceable(tX, tY)
             ) {
-                BoardModel.setFieldContent(tX, tY, BoardModel.getNextPlayer())
+                BoardModel.setCellLetter(tX, tY, selectedLetter)
+                BoardModel.setCellHighlighted(tX, tY)
                 invalidate()
             }
 
-            if (BoardModel.getNextPlayer() == BoardModel.CIRCLE) {
-                (context as MainActivity).showText("Player O's turn")
-            }
-            if (BoardModel.getNextPlayer() == BoardModel.CROSS) {
-                (context as MainActivity).showText("Player X's turn")
-            }
-
-            if (BoardModel.getWinner() == BoardModel.CIRCLE) {
-                (context as MainActivity).showText("Winner is Player O!")
-            }
-            if (BoardModel.getWinner() == BoardModel.CROSS) {
-                (context as MainActivity).showText("Winner is Player X!")
+            // if cell they touched is last placed cell, remove letter there
+            else if ((Pair(tX, tY) == BoardModel.getCellHighlighted())) {
+                BoardModel.setCellLetter(tX, tY, "")
+                BoardModel.setCellHighlighted(-1, -1)
+                invalidate()
             }
         }
 
@@ -175,12 +142,38 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         setMeasuredDimension(d, d)
     }
 
+    // what happens when a player presses "Restart Game" button
     fun resetGame() {
         BoardModel.resetModel()
+        (context as MainActivity).showText("${BoardModel.getCurrentPlayer()}'s turn")
         invalidate()
     }
 
-    fun changePlayer() {
-        BoardModel.changeNextPlayer()
+    // what happens when a player presses "Play Turn" button
+    fun playTurn() {
+        var text = ""
+        // check is letter is placed
+        if (BoardModel.getCellHighlighted() == Pair(-1, -1)) {
+            text = "${BoardModel.getCurrentPlayer()}: Please place a letter!"
+        } else {
+            BoardModel.setCellHighlighted(-1, -1)
+            // check new game status
+            when (BoardModel.getGameStatus()) {
+                BoardModel.GAMENOTOVER -> {
+                    BoardModel.changeCurrentPlayer()
+                    text = "${BoardModel.getCurrentPlayer()}'s turn"
+                }
+                BoardModel.GAMEOVERTIE -> {
+                    text = "It's a tie!"
+                }
+                BoardModel.GAMEOVERWIN -> {
+                    text = "${BoardModel.getCurrentPlayer()} wins! \uD83C\uDF89"
+                }
+            }
+
+        }
+
+        invalidate()
+        (context as MainActivity).showText(text)
     }
 }
