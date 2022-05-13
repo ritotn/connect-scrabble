@@ -45,6 +45,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        // TODO: Make starting letter different each time based on frequency
         BoardModel.setCellLetter(3, 3, "E")
 
         drawBoard(canvas)

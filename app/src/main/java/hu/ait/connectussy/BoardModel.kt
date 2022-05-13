@@ -10,8 +10,8 @@ object BoardModel {
 
     private val model = arrayOf(
         arrayOf("", "", "", "", "", "", ""),
-        arrayOf("", "", "", "R", "", "", ""),
-        arrayOf("", "", "E", "", "", "", ""),
+        arrayOf("", "", "", "", "", "", ""),
+        arrayOf("", "", "", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
         arrayOf("", "", "", "", "", "", ""),
