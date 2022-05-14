@@ -28,8 +28,8 @@
         android:layout_width="300dp"
         android:layout_height="300dp" />
 
-    <hu.ait.connectussy.LettersView
-        android:id="@+id/lettersView"
+    <hu.ait.connectussy.LetterBoxView
+        android:id="@+id/letterBoxView"
         android:layout_width="300dp"
         android:layout_height="150dp" />
 

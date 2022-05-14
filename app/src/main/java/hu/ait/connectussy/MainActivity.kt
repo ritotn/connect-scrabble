@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
             binding.boardView.resetGame()
         }
         binding.btnSubmit.setOnClickListener {
+            binding.letterBoxView.playTurn()
             binding.boardView.playTurn()
         }
 

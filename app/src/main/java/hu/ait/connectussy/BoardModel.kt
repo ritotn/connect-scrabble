@@ -18,22 +18,40 @@ object BoardModel {
         arrayOf("", "", "", "", "", "", ""),
     )
 
-    private var highlightedCell = Pair(-1, -1)
-    private var selectedLetter = "A"
+    // Ranges calculated from data found at
+    // http://en.wikipedia.org/wiki/Letter_frequency
+    private val letterFrequency = mapOf(
+        "A" to 8167, "B" to 9659, "C" to 12441, "D" to 16694, "E" to 29396,
+        "F" to 31624, "G" to 33639, "H" to 39733, "I" to 46699, "J" to 46852,
+        "K" to 47624, "L" to 51649, "M" to 54055, "N" to 60804, "O" to 68311,
+        "P" to 70240, "Q" to 70335, "R" to 76322, "S" to 82649, "T" to 91705,
+        "U" to 94463, "V" to 95441, "W" to 97801, "X" to 97951, "Y" to 99925,
+        "Z" to 100000
+    )
+
+    private var highlightedBoardCell = Pair(-1, -1)
+    private var highlightedBoxCell = -1
+    private var selectedLetter = ""
     private var winningWord = "" // TODO: Use this variable in GameOver Dialog
 
     private var currentPlayer = PLAYER1
 
-    fun getCellLetter(x: Int, y: Int) = model[x][y]
+    fun getBoardCellLetter(x: Int, y: Int) = model[x][y]
 
-    fun setCellLetter(x: Int, y: Int, letter: String) {
+    fun setBoardCellLetter(x: Int, y: Int, letter: String) {
         model[x][y] = letter
     }
 
-    fun getCellHighlighted() = highlightedCell
+    fun getBoardCellHighlighted() = highlightedBoardCell
 
-    fun setCellHighlighted(x: Int, y: Int) {
-        highlightedCell = Pair(x, y)
+    fun setBoardCellHighlighted(x: Int, y: Int) {
+        highlightedBoardCell = Pair(x, y)
+    }
+
+    fun getBoxCellHighlighted() = highlightedBoxCell
+
+    fun setBoxCellHighlighted(x: Int) {
+        highlightedBoxCell = x
     }
 
     fun getCurrentPlayer() = currentPlayer
@@ -46,9 +64,31 @@ object BoardModel {
         return selectedLetter
     }
 
-    // TODO: LetterView should call this function when a letter from the Letter Box is clicked
     fun setSelectedLetter(letter: String) {
         selectedLetter = letter
+    }
+
+    fun getRandomLetter(): String {
+        val random = Math.random() * 100000
+
+        for (letter in letterFrequency) {
+            if (letter.value > random) {
+                return letter.key
+            }
+        }
+
+        return ""
+    }
+
+    // will always be a distinct set (no duplicate letters)
+    fun getRandomLetters(quantity: Int): MutableSet<String> {
+        val letters = mutableSetOf<String>()
+
+        while (letters.size < quantity) {
+            letters.add(getRandomLetter())
+        }
+
+        return letters
     }
 
     // check if a cell is placeable
@@ -167,6 +207,7 @@ object BoardModel {
                 model[i][j] = ""
             }
         }
+        setBoardCellLetter(3, 3, getRandomLetter())
         currentPlayer = PLAYER1
     }
 }

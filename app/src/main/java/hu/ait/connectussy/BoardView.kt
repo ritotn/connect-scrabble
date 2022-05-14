@@ -29,6 +29,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         paintHighlighted = Paint()
         paintHighlighted.color = Color.RED
 
+        BoardModel.setBoardCellLetter(3, 3, BoardModel.getRandomLetter())
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -44,9 +45,6 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        // TODO: Make starting letter different each time based on frequency
-        BoardModel.setCellLetter(3, 3, "E")
 
         drawBoard(canvas)
         drawLetters(canvas)
@@ -73,7 +71,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     private fun drawLetters(canvas: Canvas) {
         for (i in 0..6) {
             for (j in 0..6) {
-                val letter = BoardModel.getCellLetter(i, j)
+                val letter = BoardModel.getBoardCellLetter(i, j)
                 if (letter != "") {
                     var widthOffset = 42
                     val heightOffset = 42
@@ -89,7 +87,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                         }
                     }
                     var paint = paintLetter
-                    if (Pair(i, j) == BoardModel.getCellHighlighted()) {
+                    if (Pair(i, j) == BoardModel.getBoardCellHighlighted()) {
                         paint = paintHighlighted
                     }
                     canvas.drawText(
@@ -114,21 +112,21 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
 
             val selectedLetter = BoardModel.getSelectedLetter()
 
-            // if they haven't already placed another cell this turn,
+            // if they haven't already placed another letter this turn,
             // and the cell they touched is a placeable cell,
             // place letter there
-            if (BoardModel.getCellHighlighted() == Pair(-1, -1) &&
+            if (BoardModel.getBoardCellHighlighted() == Pair(-1, -1) &&
                 BoardModel.isPlaceable(tX, tY)
             ) {
-                BoardModel.setCellLetter(tX, tY, selectedLetter)
-                BoardModel.setCellHighlighted(tX, tY)
+                BoardModel.setBoardCellLetter(tX, tY, selectedLetter)
+                BoardModel.setBoardCellHighlighted(tX, tY)
                 invalidate()
             }
 
-            // if cell they touched is last placed cell, remove letter there
-            else if ((Pair(tX, tY) == BoardModel.getCellHighlighted())) {
-                BoardModel.setCellLetter(tX, tY, "")
-                BoardModel.setCellHighlighted(-1, -1)
+            // if cell they touched has last placed letter, remove it
+            else if ((Pair(tX, tY) == BoardModel.getBoardCellHighlighted())) {
+                BoardModel.setBoardCellLetter(tX, tY, "")
+                BoardModel.setBoardCellHighlighted(-1, -1)
                 invalidate()
             }
         }
@@ -154,10 +152,10 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     fun playTurn() {
         var text = ""
         // check is letter is placed
-        if (BoardModel.getCellHighlighted() == Pair(-1, -1)) {
+        if (BoardModel.getBoardCellHighlighted() == Pair(-1, -1)) {
             text = "${BoardModel.getCurrentPlayer()}: Please place a letter!"
         } else {
-            BoardModel.setCellHighlighted(-1, -1)
+            BoardModel.setBoardCellHighlighted(-1, -1)
             // check new game status
             when (BoardModel.getGameStatus()) {
                 BoardModel.GAMENOTOVER -> {
