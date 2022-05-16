@@ -14,7 +14,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnRestart.setOnClickListener {
-            binding.boardView.resetGame()
+            MaterialDialog(this).show {
+                title(R.string.restart)
+                message(R.string.restart_game)
+                positiveButton(R.string.yes) {
+                    dialog -> binding.boardView.resetGame()
+                }
+                negativeButton(R.string.no)
+            }
+
         }
         binding.btnSubmit.setOnClickListener {
             binding.letterBoxView.playTurn()
@@ -28,10 +36,6 @@ class MainActivity : AppCompatActivity() {
                 positiveButton(R.string.okay)
             }
         }
-        /* TODO: Dialog should pop up for Instructions button
-        *        Mention that words are from https://www.thefreedictionary.com/4-letter-words.htm
-        */
-        // TODO: Dialog should pop up for when the game is over
     }
 
     fun showText(message: String) {

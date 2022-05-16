@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat.getColor
 import com.afollestad.materialdialogs.MaterialDialog
+import java.util.*
 
 class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private var paintBackground: Paint = Paint()
@@ -105,37 +106,9 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     var paintCell = paintNormalCell
                     var paint = paintLetter
                     if (Pair(i, j) == BoardModel.getBoardCellHighlighted()) {
-                        paintCell = paintHighlightedCell
-                        canvas.drawRect(
-                            (width/7*i).toFloat(),
-                            (height/7*j).toFloat(),
-                            ((width/7) + (width/7*i)).toFloat(),
-                            ((height/7) + (height/7*j)).toFloat(),
-                            paintCell
-                        )
-                        canvas.drawRect(
-                            (2.5 + width/7*i).toFloat(),
-                            (2.5 + height/7*j).toFloat(),
-                            (2.5 + (width/7) + (width/7*i)).toFloat(),
-                            (2.5 + (height/7) + (height/7*j)).toFloat(),
-                            paintLine
-                        )
+                        drawCell(canvas, i, j, paintHighlightedCell)
                     } else {
-                        paintCell = paintNormalCell
-                        canvas.drawRect(
-                            (width/7*i).toFloat(),
-                            (height/7*j).toFloat(),
-                            ((width/7) + (width/7*i)).toFloat(),
-                            ((height/7) + (height/7*j)).toFloat(),
-                            paintCell
-                        )
-                        canvas.drawRect(
-                            (2.5 + width/7*i).toFloat(),
-                            (2.5 + height/7*j).toFloat(),
-                            (2.5 + (width/7) + (width/7*i)).toFloat(),
-                            (2.5 + (height/7) + (height/7*j)).toFloat(),
-                            paintLine
-                        )
+                        drawCell(canvas, i, j, paintNormalCell)
                     }
                     canvas.drawText(
                         letter,
@@ -225,7 +198,8 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     MaterialDialog(context).show {
                         title(R.string.game_over)
                         message(text = "${BoardModel.getCurrentPlayer()} wins! The winning word was " +
-                                "${BoardModel.getWinningWord()}.")
+                                "${BoardModel.getWinningWord()
+                                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}.")
                         positiveButton(R.string.play_again) { dialog ->
                             BoardModel.resetModel()
                             resetGame()
@@ -238,5 +212,22 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
 
         invalidate()
         (context as MainActivity).showText(text)
+    }
+
+    private fun drawCell(canvas: Canvas, i: Int, j: Int, paint: Paint) {
+        canvas.drawRect(
+            (width/7*i).toFloat(),
+            (height/7*j).toFloat(),
+            ((width/7) + (width/7*i)).toFloat(),
+            ((height/7) + (height/7*j)).toFloat(),
+            paint
+        )
+        canvas.drawRect(
+            (2.5 + width/7*i).toFloat(),
+            (2.5 + height/7*j).toFloat(),
+            (2.5 + (width/7) + (width/7*i)).toFloat(),
+            (2.5 + (height/7) + (height/7*j)).toFloat(),
+            paintLine
+        )
     }
 }
