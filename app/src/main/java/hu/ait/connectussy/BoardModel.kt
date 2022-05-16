@@ -160,8 +160,8 @@ object BoardModel {
                 for (k in 0..3) {
                     possibleWord += model[i][j + k]
                 }
-                possibleWords.add(possibleWord.lowercase())
-                possibleWords.add(possibleWord.lowercase().reversed())
+                possibleWords.add(possibleWord)
+                possibleWords.add(possibleWord.reversed())
             }
 
         }
@@ -172,8 +172,8 @@ object BoardModel {
                 for (k in 0..3) {
                     possibleWord += model[i + k][j]
                 }
-                possibleWords.add(possibleWord.lowercase())
-                possibleWords.add(possibleWord.lowercase().reversed())
+                possibleWords.add(possibleWord)
+                possibleWords.add(possibleWord.reversed())
             }
         }
         // 16 * 2 possible diagonal (top-left to bottom-right) words ↘️
@@ -183,8 +183,8 @@ object BoardModel {
                 for (k in 0..3) {
                     possibleWord += model[i + k][j + k]
                 }
-                possibleWords.add(possibleWord.lowercase())
-                possibleWords.add(possibleWord.lowercase().reversed())
+                possibleWords.add(possibleWord)
+                possibleWords.add(possibleWord.reversed())
             }
         }
         // 16 * 2 possible diagonal (bottom-left to top-right) words ↗️
@@ -194,8 +194,8 @@ object BoardModel {
                 for (k in 0..3) {
                     possibleWord += model[i - k][j + k]
                 }
-                possibleWords.add(possibleWord.lowercase())
-                possibleWords.add(possibleWord.lowercase().reversed())
+                possibleWords.add(possibleWord)
+                possibleWords.add(possibleWord.reversed())
             }
         }
 

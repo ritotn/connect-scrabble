@@ -9,7 +9,7 @@
         Each tile must be placed adjacent to a tile which has already been placed. As tiles are
         placed, new letters are added from the tilebag based on their frequency. To win the game,
         a player must create a 4-letter word which exists in the dictionary, which is sourced from
-        https://www.thefreedictionary.com/4-letter-words.htm. \n \nClick on an empty cell to place a tile,
+        https://raw.githubusercontent.com/getify/dwordly-game/main/four-letter-words.json. \n \nClick on an empty cell to place a tile,
         click on it again to remove the tile, and click "Play Turn" to submit a turn. Have fun!!!
     </string>
     <string name="okay">Sounds good!</string>
