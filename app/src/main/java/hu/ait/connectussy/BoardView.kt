@@ -198,8 +198,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     MaterialDialog(context).show {
                         title(R.string.game_over)
                         message(text = "${BoardModel.getCurrentPlayer()} wins! The winning word was " +
-                                "${BoardModel.getWinningWord()
-                                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}.")
+                                "${BoardModel.getWinningWord()}.")
                         positiveButton(R.string.play_again) { dialog ->
                             BoardModel.resetModel()
                             resetGame()

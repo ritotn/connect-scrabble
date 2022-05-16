@@ -35,7 +35,7 @@ object BoardModel {
     private var highlightedBoardCell = Pair(-1, -1)
     private var highlightedBoxCell = -1
     private var selectedLetter = ""
-    private var winningWord = "" // TODO: Use this variable in GameOver Dialog
+    private var winningWord = ""
 
     private var currentPlayer = PLAYER1
 

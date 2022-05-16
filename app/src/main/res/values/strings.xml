@@ -5,11 +5,10 @@
     <string name="instructions">Instructions 🤔</string>
     <string name="restart_game">Are you sure that you want to reset this game and start from scratch?</string>
     <string name="player_1_s_turn">Player 1\, it\'s your turn!</string>
-    <string name="instr_body">To play, players take turns placing a letter from the tile rack.
-        Each tile must be placed adjacent to a tile which has already been placed. As tiles are
-        placed, new letters are added from the tilebag based on their frequency. To win the game,
-        a player must create a 4-letter word which exists in the dictionary, which is sourced from
-        https://raw.githubusercontent.com/getify/dwordly-game/main/four-letter-words.json. \n \nClick on an empty cell to place a tile,
+    <string name="instr_body">To play, take turns placing a letter from the tile rack.
+        Tiles must be placed adjacent to an already placed tile. As they are
+        placed, new letters are added to the tile rack based on letter frequency. \n \n To win,
+        you must form a valid 4-letter word (dictionary: https://raw.githubusercontent.com/getify/dwordly-game/main/four-letter-words.json). \n \nClick on an empty cell to place a tile,
         click on it again to remove the tile, and click "Play Turn" to submit a turn. Have fun!!!
     </string>
     <string name="okay">Sounds good!</string>

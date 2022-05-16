@@ -15,7 +15,6 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: Change animation process (optional)
         val anim = AnimationUtils.loadAnimation(this, R.anim.splash_anim)
 
         anim.setAnimationListener(
@@ -33,7 +32,6 @@ class SplashActivity : AppCompatActivity() {
             }
         )
 
-        // TODO: Change animation logo
         binding.imgSplash.startAnimation(anim)
 
     }
