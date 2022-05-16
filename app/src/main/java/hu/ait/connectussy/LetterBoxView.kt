@@ -4,10 +4,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
+import java.lang.reflect.Type
 
 class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -16,30 +20,33 @@ class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, att
     private var paintLetter: Paint
     private var paintHighlighted: Paint
 
+
     private val numLetters = 5
     private var letterSet = BoardModel.getRandomLetters(numLetters).toMutableList()
 
     init {
-        paintBackground.color = Color.HSVToColor(floatArrayOf(3.5f, .25f, 1f))
+        paintBackground.color = Color.WHITE
         paintBackground.style = Paint.Style.FILL
 
         paintLine = Paint()
-        paintLine.color = Color.WHITE
+        paintLine.color = Color.LTGRAY
         paintLine.style = Paint.Style.STROKE
-        paintLine.strokeWidth = 5f
+        paintLine.strokeWidth = 10f
 
         paintLetter = Paint()
-        paintLetter.color = Color.BLACK
+        paintLetter.color = ContextCompat.getColor(context!!, R.color.gray)
+        paintLetter.typeface = Typeface.DEFAULT_BOLD
 
         paintHighlighted = Paint()
-        paintHighlighted.color = Color.RED
-
+        paintHighlighted.style = Paint.Style.FILL
+        paintHighlighted.color = ContextCompat.getColor(context!!, R.color.yellow)
+        paintHighlighted.typeface = Typeface.DEFAULT_BOLD
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        paintLetter.textSize = h / 7f
-        paintHighlighted.textSize = h / 7f
+        paintLetter.textSize = w / 7.5f
+        paintHighlighted.textSize = w / 7.5f
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -49,22 +56,30 @@ class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, att
     }
 
     private fun drawLetterBox(canvas: Canvas) {
-        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintBackground)
-        // TODO: Make this look nicer
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintLine)
+        for (i in 1..6) {
+
+            canvas.drawLine(
+                (i * width / 5).toFloat(), 0f, (i * width / 5).toFloat(), height.toFloat(),
+                paintLine
+            )
+
+        }
     }
 
     private fun drawLetters(canvas: Canvas) {
         for (letter in letterSet) {
-            var widthOffset = 42
+            var widthOffset = width / 45f
+            val heightOffset = height / 3.75f
             when (letter) {
                 "I" -> { // shift "I" to the right a bit
-                    widthOffset = 21
+                    widthOffset = width/45f - width/135f
                 }
                 "M" -> { // shift "M" to the left a bit
-                    widthOffset = 84
+                    widthOffset = width/45f + width/135f
                 }
-                "W" -> { // shift "W" to the left a bit
-                    widthOffset = 84
+                "W" -> { // shift "M" to the left a bit
+                    widthOffset = width/45f + width/135f
                 }
             }
             var paint = paintLetter
@@ -73,8 +88,8 @@ class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, att
             }
             canvas.drawText(
                 letter,
-                ((letterSet.indexOf(letter) + 1) * width / 7 + width / widthOffset).toFloat(),
-                (height / 2).toFloat(),
+                ((letterSet.indexOf(letter)) * width / 5 + width / widthOffset).toFloat(),
+                (height - heightOffset).toFloat(),
                 paint
             )
         }
@@ -85,7 +100,7 @@ class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (event?.action == MotionEvent.ACTION_DOWN) {
 
             // get coordinate of where they touched
-            val tX = (event.x.toInt() / (width / 7)) - 1
+            val tX = (event.x.toInt() / (width / 5))
 
             // if they touched one of the letters
             if (tX in 0..4) {

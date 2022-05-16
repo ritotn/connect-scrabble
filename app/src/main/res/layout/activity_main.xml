@@ -4,24 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#edffea"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <Button
-        android:id="@+id/btnInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/instructions"
-        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tvMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/player_1_s_turn"
-        android:textSize="20sp" />
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
 
     <hu.ait.connectussy.BoardView
         android:id="@+id/boardView"
@@ -29,9 +25,11 @@
         android:layout_height="300dp" />
 
     <hu.ait.connectussy.LetterBoxView
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:id="@+id/letterBoxView"
         android:layout_width="300dp"
-        android:layout_height="150dp" />
+        android:layout_height="60dp" />
 
     <Button
         android:id="@+id/btnSubmit"
@@ -44,6 +42,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/restart_game" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/instruction_icon"
+        android:contentDescription="@string/instructions"
+        android:layout_margin="16dp" />
 
 
 </LinearLayout>

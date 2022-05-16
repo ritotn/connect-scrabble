@@ -2,6 +2,7 @@ package hu.ait.connectussy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.afollestad.materialdialogs.MaterialDialog
 import hu.ait.connectussy.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +21,13 @@ class MainActivity : AppCompatActivity() {
             binding.boardView.playTurn()
         }
 
+        binding.btnInstructions.setOnClickListener {
+            MaterialDialog(this).show {
+                title(R.string.instructions)
+                message(R.string.instr_body)
+                positiveButton(R.string.okay)
+            }
+        }
         /* TODO: Dialog should pop up for Instructions button
         *        Mention that words are from https://www.thefreedictionary.com/4-letter-words.htm
         */

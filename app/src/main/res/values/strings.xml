@@ -1,8 +1,20 @@
 <resources>
-    <string name="app_name">Connectussy</string>
-    <string name="connectussy">Connectussy</string>
+    <string name="app_name">Connectussy ⭐</string>
+    <string name="connectussy">Connectussy ⭐</string>
     <string name="play_turn">Play Turn</string>
     <string name="instructions">Instructions</string>
     <string name="restart_game">Restart Game</string>
-    <string name="player_1_s_turn">Player 1\'s turn</string>
+    <string name="player_1_s_turn">Player 1\, it\'s your turn!</string>
+    <string name="instr_body">To play, players take turns placing a letter from the tile rack.
+        Each tile must be placed adjacent to a tile which has already been placed. As tiles are
+        placed, new letters are added from the tilebag based on their frequency. To win the game,
+        a player must create a 4-letter word which exists in the dictionary, which is sourced from
+        https://www.thefreedictionary.com/4-letter-words.htm. \n \nClick on an empty cell to place a tile, click on it again to remove the tile, and click
+        "Play Turn" to submit a turn. Have fun!
+    </string>
+    <string name="okay">Sounds good!</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="player_wins">${BoardModel.player}$ wins! The winning word was %2$s</string>
+    <string name="play_again">Play Again!</string>
+    <string name="tie_game">It\'s a tie!</string>
 </resources>

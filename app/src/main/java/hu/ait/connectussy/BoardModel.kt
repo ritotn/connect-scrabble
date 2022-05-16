@@ -1,5 +1,8 @@
 package hu.ait.connectussy
 
+import com.afollestad.materialdialogs.MaterialDialog
+import hu.ait.connectussy.databinding.ActivityMainBinding
+
 object BoardModel {
     const val PLAYER1 = "Player 1"
     const val PLAYER2 = "Player 2"
@@ -41,6 +44,8 @@ object BoardModel {
     fun setBoardCellLetter(x: Int, y: Int, letter: String) {
         model[x][y] = letter
     }
+
+    fun getWinningWord() = winningWord
 
     fun getBoardCellHighlighted() = highlightedBoardCell
 
@@ -136,7 +141,9 @@ object BoardModel {
 
         // check if win
         winningWord = isWordFormed()
-        if (winningWord != "") return GAMEOVERWIN
+        if (winningWord != "") {
+            return GAMEOVERWIN
+        }
 
         return GAMENOTOVER
     }
