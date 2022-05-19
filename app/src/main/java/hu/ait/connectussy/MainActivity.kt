@@ -6,7 +6,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import hu.ait.connectussy.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
                 title(R.string.restart)
                 message(R.string.restart_game)
                 positiveButton(R.string.yes) {
-                    dialog -> binding.boardView.resetGame()
+                binding.boardView.resetGame()
                 }
                 negativeButton(R.string.no)
             }

@@ -2,15 +2,11 @@ package hu.ait.connectussy
 
 import android.content.Context
 import android.graphics.*
-import android.provider.Settings.Global.getString
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.res.ResourcesCompat.getColor
 import com.afollestad.materialdialogs.MaterialDialog
-import java.util.*
 
 class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private var paintBackground: Paint = Paint()
@@ -37,11 +33,11 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         paintLetter.color = Color.WHITE
 
         paintHighlightedCell = Paint()
-        paintHighlightedCell.color = ContextCompat.getColor(context!!, R.color.yellow)
+        paintHighlightedCell.color = ContextCompat.getColor(context, R.color.yellow)
         paintHighlightedCell.style = Paint.Style.FILL
 
         paintNormalCell = Paint()
-        paintNormalCell.color = ContextCompat.getColor(context!!, R.color.gray)
+        paintNormalCell.color = ContextCompat.getColor(context, R.color.gray)
 
         paintHighlighted = Paint()
         paintHighlighted.color = Color.BLACK
@@ -63,8 +59,8 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        drawBoard(canvas!!)
-        drawLetters(canvas!!)
+        drawBoard(canvas)
+        drawLetters(canvas)
     }
 
     private fun drawBoard(canvas: Canvas) {
@@ -97,14 +93,14 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                             widthOffset = 21
                         }
                         "M" -> { // shift "M" to the left a bit
-                            widthOffset = 84
+                            widthOffset = 107
                         }
                         "W" -> { // shift "W" to the left a bit
-                            widthOffset = 84
+                            widthOffset = 107
                         }
                     }
-                    var paintCell = paintNormalCell
-                    var paint = paintLetter
+                    paintNormalCell
+                    val paint = paintLetter
                     if (Pair(i, j) == BoardModel.getBoardCellHighlighted()) {
                         drawCell(canvas, i, j, paintHighlightedCell)
                     } else {
@@ -187,7 +183,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                     MaterialDialog(context).show {
                         title(R.string.game_over)
                         message(R.string.tie_game)
-                        positiveButton(R.string.play_again) { dialog ->
+                        positiveButton(R.string.play_again) {
                             BoardModel.resetModel()
                             resetGame()
                         }
@@ -199,7 +195,7 @@ class BoardView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
                         title(R.string.game_over)
                         message(text = "${BoardModel.getCurrentPlayer()} wins! The winning word was " +
                                 "${BoardModel.getWinningWord()}.")
-                        positiveButton(R.string.play_again) { dialog ->
+                        positiveButton(R.string.play_again) {
                             BoardModel.resetModel()
                             resetGame()
                         }

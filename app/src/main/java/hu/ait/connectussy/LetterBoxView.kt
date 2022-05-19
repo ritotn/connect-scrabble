@@ -6,12 +6,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
-import java.lang.reflect.Type
 
 class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -39,7 +36,7 @@ class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, att
 
         paintHighlighted = Paint()
         paintHighlighted.style = Paint.Style.FILL
-        paintHighlighted.color = ContextCompat.getColor(context!!, R.color.yellow)
+        paintHighlighted.color = ContextCompat.getColor(context, R.color.yellow)
         paintHighlighted.typeface = Typeface.DEFAULT_BOLD
     }
 
@@ -88,8 +85,8 @@ class LetterBoxView(context: Context?, attrs: AttributeSet?) : View(context, att
             }
             canvas.drawText(
                 letter,
-                ((letterSet.indexOf(letter)) * width / 5 + width / widthOffset).toFloat(),
-                (height - heightOffset).toFloat(),
+                ((letterSet.indexOf(letter)) * width / 5 + width / widthOffset),
+                (height - heightOffset),
                 paint
             )
         }

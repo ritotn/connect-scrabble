@@ -1,11 +1,8 @@
 package hu.ait.connectussy
 
-import com.afollestad.materialdialogs.MaterialDialog
-import hu.ait.connectussy.databinding.ActivityMainBinding
-
 object BoardModel {
-    const val PLAYER1 = "Player 1"
-    const val PLAYER2 = "Player 2"
+    private const val PLAYER1 = "Player 1"
+    private const val PLAYER2 = "Player 2"
 
     const val GAMENOTOVER = "Game Not Over"
     const val GAMEOVERWIN = "Game Over Win"
